@@ -3,8 +3,15 @@
     border-radius: 10px;
     text-align: center;
     padding-bottom: 10px;
+    background-color: rgb(94, 166, 169);
 }
 
-.service img {
-    width: 100%;
+.image {
+    width: 90%;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+.price {
+    color: rgb(192, 12, 9);
 }

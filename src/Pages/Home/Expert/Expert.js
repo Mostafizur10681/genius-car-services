@@ -1,16 +1,18 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Expert = ({ expert }) => {
     const { img, name } = expert;
     return (
-        <div class="card col-sm-12 col-md-6 col-lg-4 " style={{ width: "18rem" }}>
-            <img src={img} class="card-img-top" alt="..." />
-            <div class="card-body">
-                <h5 class="card-title">{name}</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+        <div className="service">
+            <img src={img} className="image" alt="..." />
+            <div className="card-body">
+                <h2 className='text-white mt-2'>{name}</h2>
+                <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" className="btn btn-danger">Go somewhere</a>
             </div>
         </div>
+
     );
 };
 
