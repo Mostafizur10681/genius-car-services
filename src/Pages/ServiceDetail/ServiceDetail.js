@@ -1,12 +1,17 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 const ServiceDetail = () => {
 
     const { serviceName } = useParams();
     return (
-        <div>
+        <div className='text-center mt-5'>
             <h1>Welcome to my Service Details : {serviceName}</h1>
+            <div>
+                <Link to='/checkout'>
+                    <button className='btn btn-danger'>Procced CheckOut</button>
+                </Link>
+            </div>
         </div>
     );
 };
