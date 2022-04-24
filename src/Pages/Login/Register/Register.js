@@ -1,11 +1,13 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth';
 import auth from '../../../firebase.init';
 import SocialIcon from '../SocialIcon/SocialIcon';
 
 const Register = () => {
+
+    const [agree, setAgree] = useState(false)
     const nameRef = useRef('')
     const emailRef = useRef('')
     const passwordRef = useRef('')
@@ -14,8 +16,9 @@ const Register = () => {
         user,
         loading,
         error,
-    ] = useCreateUserWithEmailAndPassword(auth);
+    ] = useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
 
+    const [updateProfile, updating, updateError] = useUpdateProfile(auth);
     const navigate = useNavigate();
 
     const handleUseNavigateRegister = () => {
@@ -23,15 +26,20 @@ const Register = () => {
     }
 
     if (user) {
-        navigate('/home')
+        console.log(user)
     }
 
-    const handleOnSubmitRegister = event => {
+    const handleOnSubmitRegister = async (event) => {
         event.preventDefault();
         const name = nameRef.current.value;
         const email = emailRef.current.value;
-        const password = passwordRef.current.value;
-        createUserWithEmailAndPassword(email, password)
+        const password = passwordRef.current.value
+
+        // const checkbox = event.target.terms.checked;
+        await createUserWithEmailAndPassword(email, password);
+        await updateProfile({ displayName: name });
+        console.log('Updated profile');
+        navigate('/home')
     }
     return (
         <div className='container w-50 mx-auto mt-5 border pb-3 pt-3 bg-light'>
@@ -48,9 +56,12 @@ const Register = () => {
                     <Form.Control ref={passwordRef} type="password" placeholder="Password" required />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Accept All Terms and Condition" />
+                    <Form.Check className={agree ? 'ms-1' : 'ms-1 text-danger'} onClick={() => setAgree(!agree)} type="checkbox" name='terms' label="Accept All Terms and Condition" />
                 </Form.Group>
-                <Button className='w-50 d-block mx-auto text-white' style={{ backgroundColor: 'rgb(94, 166, 169)' }} variant="btn " type="submit">
+                <Button disabled={!agree}
+                    className='w-50 d-block mx-auto text-white'
+                    style={{ backgroundColor: 'rgb(94, 166, 169)' }}
+                    variant="btn " type="submit">
                     Register
                 </Button>
             </Form>
